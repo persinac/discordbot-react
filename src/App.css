@@ -1,3 +1,23 @@
+html {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  height: 100%;
+  width: 100%;
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+.full_height_width {
+  height: 100%;
+  width: 100%;
+}
+
 .App {
   text-align: center;
 }
@@ -20,6 +40,45 @@
 
 .App-link {
   color: #61dafb;
+}
+
+.quad_one {
+  top: 0;
+  left: 0;
+  position: absolute;
+  height: 50%;
+  width: 50%;
+}
+
+.quad_two {
+  top: 0;
+  left: 50%;
+  position: absolute;
+  height: 50%;
+  width: 50%;
+}
+
+.quad_three {
+  top: 50%;
+  left: 0;
+  position: absolute;
+  height: 50%;
+  width: 50%;
+}
+
+.quad_four {
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  height: 50%;
+  width: 50%;
+}
+
+.center_me {
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
 }
 
 @keyframes App-logo-spin {
