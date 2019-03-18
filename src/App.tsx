@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
 import {RageQuitter, RageQuitterCounterView} from './common/Structure';
 import './App.css';
+import {ForceDirectedGraph} from './components/ForceDirectedGraph';
 
 class App extends Component {
   state = {
@@ -18,7 +20,19 @@ class App extends Component {
   }
 
   public componentDidMount(): void {
+    const N = 50;
+    const gData: any = {
+      nodes: [...Array(N).keys()].map(i => ({ id: i })),
+      links: [...Array(N).keys()]
+        .filter(id => id)
+        .map(id => ({
+          source: id,
+          target: Math.round(Math.random() * (id-1))
+        }))
+    };
     this.getRageQuitters()
+    const fdg = new ForceDirectedGraph();
+    fdg.renderGraph(gData)
   }
 
   private getRageQuitters = (): void => {
@@ -40,11 +54,10 @@ class App extends Component {
   private renderRagerTwo = (rq: RageQuitterCounterView[]) => {
     let tableRows = [] as any;
     rq.forEach((e)=>{
-      console.log(this.tableRowElement(e));
       tableRows.push(this.tableRowElement(e))
     });
     console.log(tableRows);
-    return <table className="center_me">
+    return <table>
       <thead>
       <tr>
         <td>Player</td>
@@ -70,7 +83,7 @@ class App extends Component {
     return <td>{value}</td>
   };
 
-  private addUser = (newRQ: RageQuitter) => {
+  private addRageQuitter = (newRQ: RageQuitter) => {
     const postData = { method: 'POST' };
     fetch(`http://localhost:48330/rager/new/${newRQ.player}&${newRQ.reporter}`, postData)
       .then(this.getRageQuitters)
@@ -88,39 +101,39 @@ class App extends Component {
   };
 
   render() {
-    const { rageQuitters, rageQuitter } = this.state
+    const { rageQuitters } = this.state
     this.renderRagerTwo(rageQuitters);
-    return (
-      <div className="App full_height_width">
-        <div className="quad_one">
-          {this.renderRagerTwo(rageQuitters)}
-        </div>
-        <div className="quad_two">
-          <div className="quad_one">
-            {this.renderRagerTwo(rageQuitters)}
-          </div>
-          <div className="quad_two">
-            {this.renderRagerTwo(rageQuitters)}
-          </div>
-        </div>
-        {/*<div>*/}
-          {/*<label>Player: </label>*/}
-          {/*<input*/}
-            {/*value={this.state.rageQuitter.player}*/}
-            {/*onChange={e => this.setState({ rageQuitter: {...rageQuitter, player:e.target.value}})}*/}
-          {/*/>*/}
-          {/*<label>Reporter: </label>*/}
-          {/*<input*/}
-            {/*value={this.state.rageQuitter.reporter}*/}
-            {/*onChange={e => this.setState({ rageQuitter: {...rageQuitter, reporter:e.target.value}})}*/}
-          {/*/>*/}
-          {/*<button onClick={() => {*/}
-            {/*this.addUser(this.state.rageQuitter);*/}
-            {/*this.resetRageQuitter();*/}
-          {/*}}>New Rager</button>*/}
-        {/*</div>*/}
-      </div>
-    );
+    return (<div className="App full_height_width" id="my_div">
+      <Container>
+        <Row className="justify-content-md-center">
+          <Col>{this.renderRagerTwo(rageQuitters)}</Col>
+          <Col>{this.renderRagerTwo(rageQuitters)}</Col>
+        </Row>
+        <Row className="justify-content-md-center">
+          <Col>{this.renderRagerTwo(rageQuitters)}</Col>
+          <Col>{this.renderRagerTwo(rageQuitters)}</Col>
+          <Col>{this.renderRagerTwo(rageQuitters)}</Col>
+        </Row>
+      </Container>
+      <Container id="my_container"/>
+      {/*<div>*/}
+      {/*<label>Player: </label>*/}
+      {/*<input*/}
+      {/*value={this.state.rageQuitter.player}*/}
+      {/*onChange={e => this.setState({ rageQuitter: {...rageQuitter, player:e.target.value}})}*/}
+      {/*/>*/}
+      {/*<label>Reporter: </label>*/}
+      {/*<input*/}
+      {/*value={this.state.rageQuitter.reporter}*/}
+      {/*onChange={e => this.setState({ rageQuitter: {...rageQuitter, reporter:e.target.value}})}*/}
+      {/*/>*/}
+      {/*<button onClick={() => {*/}
+      {/*this.addUser(this.state.rageQuitter);*/}
+      {/*this.resetRageQuitter();*/}
+      {/*}}>New Rager</button>*/}
+      {/*</div>*/}
+    </div>)
+
   }
 }
 
